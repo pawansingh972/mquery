@@ -11,6 +11,8 @@
                   <h3>Collection</h3>
                   <b-form-input
                     v-model="collection"
+                    class="collection"
+                    v-bind:class="{ 'nodata': needCollection }"
                     type="text"
                     placeholder="Enter your collection">
                   </b-form-input>
@@ -50,15 +52,30 @@ export default {
   data () {
     return {
       query: '',
+      needCollection: false,
       collection: ''
     }
   },
   watch: { },
   methods: {
     constructQuery () {
-      this.query = 'db.getCollection(\''+ this.collection +'\').find({});'
+      if (this.collection === '') {
+        this.needCollection = true
+        return
+      }
+
+      this.needCollection = false
+      this.query = 'db.getCollection(\'' + this.collection + '\').find({});'
     }
   }
 }
 </script>
 
+<style scoped>
+  .collection.nodata {
+    border-color: #dc3545;
+  }
+  .collection.nodata:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+  }
+</style>
