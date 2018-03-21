@@ -1,6 +1,6 @@
 <template>
   <div class="query">
-    <h3 class="mt-3 text-center">m{query} - Your mongoDB query generator</h3>
+    <h3 class="mt-5 text-center">m{query} - Your mongoDB query generator</h3>
     <b-container fluid class="mt-5">
       <b-row>
           <b-col>
@@ -16,8 +16,15 @@
                     type="text"
                     placeholder="Enter your collection">
                   </b-form-input>
+                  <!-- Key/Value pairs -->
+                  <ol class="mt-4">
+                    <li class="mb-4" v-for="(keyValue, index) in keyValues" :key="index">
+                      <input v-model='keys[index]' :type="keyValue.type" name="" :id="'key-' + keyValue.index">
+                      <input v-model='values[index]' class="ml-4" :type="keyValue.type" name="" :id="'value-' + keyValue.index">
+                    </li>
+                  </ol>
                   <b-button-group vertical>
-                    <b-button size="sm" class="mt-3">add { key:value }</b-button>
+                    <b-button size="sm" v-on:click="addKeyValue" class="mt-3">add { key:value }</b-button>
                     <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
                   </b-button-group>
                 </b-col>
@@ -47,9 +54,13 @@ export default {
   name: 'query',
   data () {
     return {
+      index: 0,
       query: '',
       needCollection: false,
-      collection: ''
+      collection: '',
+      keyValues: [],
+      keys: [],
+      values: []
     }
   },
   watch: {
@@ -67,7 +78,25 @@ export default {
       }
 
       this.needCollection = false
-      this.query = 'db.getCollection(\'' + this.collection + '\').find({});'
+      this.queryStart = 'db.getCollection(\'' + this.collection + '\').find({'
+
+      this.keyValueQuery = ''
+
+      for (let kv of this.keyValues) {
+        this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
+
+        // Multiple key values
+        if ((kv.index + 1) !== this.keyValues.length) {
+          this.keyValueQuery += ', '
+        }
+      }
+
+      this.queryEnd = '});'
+      this.query = this.queryStart + this.keyValueQuery + this.queryEnd
+    },
+    addKeyValue () {
+      this.keyValues.push({index: this.index, type: 'text'})
+      this.index++
     }
   }
 }
