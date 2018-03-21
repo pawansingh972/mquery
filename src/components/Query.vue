@@ -1,6 +1,6 @@
 <template>
   <div class="query">
-    <h3 class="mt-1 text-center">m{query} - Your mongoDB query generator</h3>
+    <h3 class="mt-3 text-center">m{query} - Your mongoDB query generator</h3>
     <b-container fluid class="mt-5">
       <b-row>
           <b-col>
@@ -16,14 +16,10 @@
                     type="text"
                     placeholder="Enter your collection">
                   </b-form-input>
-
-                  <b-button
-                    size="sm"
-                    variant="primary"
-                    v-on:click="constructQuery"
-                    class="mt-3">
-                    GENERATE
-                  </b-button>
+                  <b-button-group vertical>
+                    <b-button size="sm" class="mt-3">add { key:value }</b-button>
+                    <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
+                  </b-button-group>
                 </b-col>
               </b-row>
             </b-container>
@@ -56,7 +52,13 @@ export default {
       collection: ''
     }
   },
-  watch: { },
+  watch: {
+    collection: function (value) {
+      if (value === '') {
+        this.query = ''
+      }
+    }
+  },
   methods: {
     constructQuery () {
       if (this.collection === '') {
