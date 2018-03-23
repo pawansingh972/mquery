@@ -1,6 +1,8 @@
 <template>
   <div class="query">
-    <h3 class="mt-5 text-center">m{query} - Your mongoDB query generator</h3>
+    <div id="header">
+      <h4 class="text-center">m{query} - Your mongoDB query generator</h4>
+    </div>
     <b-container fluid class="mt-5">
       <b-row>
           <b-col>
@@ -91,8 +93,8 @@ export default {
         }
       }
 
-      this.queryEnd = '});'
-      this.query = this.queryStart + this.keyValueQuery + this.queryEnd
+      this.queryEnd = '})'
+      this.query = this.queryStart + this.keyValueQuery + this.queryEnd + '.pretty();'
     },
     addKeyValue () {
       this.keyValues.push({index: this.index, type: 'text'})
