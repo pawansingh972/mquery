@@ -125,7 +125,7 @@ export default {
 
           //! Multiple key values
           if (projection.index + 1 !== this.projections.length) {
-            this.projections += ', '
+            this.projectionQuery += ', '
           }
         }
 
