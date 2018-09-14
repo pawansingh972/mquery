@@ -25,10 +25,22 @@
                       <input v-model='values[index]' class="ml-4" :type="keyValue.type" name="" :id="'value-' + keyValue.index">
                     </li>
                   </ol>
-                  <b-button-group vertical>
-                    <b-button size="sm" v-on:click="addKeyValue" class="mt-3">add { key:value }</b-button>
-                    <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
-                  </b-button-group>
+                  <b-button size="sm" v-on:click="addKeyValue" class="mt-3">add { key:value }</b-button><br>
+                  <!-- Projections Key/Value pairs -->
+                  <ol class="mt-4">
+                    <li class="mb-4" v-for="(projection, index) in projections" :key="index">
+                      <input v-model='p_keys[index]' :type="projection.type" name="" :id="'key-' + projection.index">
+                      <input v-model='p_values[index]' class="ml-4" :type="projection.type" name="" :id="'value-' + projection.index">
+                    </li>
+                  </ol>
+                  <b-button size="sm" v-on:click="addProjection" class="mt-3">add projections { key:value }</b-button><br><br>
+                  <b-form-group class="mt-3" label="Prettify">
+                    <b-form-radio-group id="prettify" v-model="prettify_selected" name="prettify">
+                      <b-form-radio value="p_yes">Yes</b-form-radio>
+                      <b-form-radio value="p_no">No</b-form-radio>
+                    </b-form-radio-group>
+                  </b-form-group>
+                  <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
                 </b-col>
               </b-row>
             </b-container>
@@ -57,12 +69,19 @@ export default {
   data () {
     return {
       index: 0,
+      p_index: 0,
       query: '',
+      projectionQuery: '',
       needCollection: false,
       collection: '',
       keyValues: [],
+      projections: [],
       keys: [],
-      values: []
+      values: [],
+      p_keys: [],
+      p_values: [],
+      prettify: '',
+      prettify_selected: 'p_yes'
     }
   },
   watch: {
@@ -87,18 +106,50 @@ export default {
       for (let kv of this.keyValues) {
         this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
 
-        // Multiple key values
+        //! Multiple key values
         if ((kv.index + 1) !== this.keyValues.length) {
           this.keyValueQuery += ', '
         }
       }
 
-      this.queryEnd = '})'
-      this.query = this.queryStart + this.keyValueQuery + this.queryEnd + '.pretty();'
+      this.queryEnd = '}'
+
+      //! Projections
+      if (this.projections.length) {
+        this.projectionQuery = ', {'
+
+        for (let projection of this.projections) {
+          this.projectionQuery +=
+            this.p_keys[projection.index] + ': ' + this.p_values[projection.index]
+
+          //! Multiple key values
+          if (projection.index + 1 !== this.projections.length) {
+            this.projections += ', '
+          }
+        }
+
+        this.queryEnd += this.projectionQuery + ' }'
+      }
+
+      //! End of query
+      this.queryEnd += ')'
+
+      this.query = this.queryStart + this.keyValueQuery + this.queryEnd
+
+      //! For prettify
+      if (this.prettify_selected === 'p_yes') {
+        this.query += '.pretty();'
+      } else {
+        this.query += ';'
+      }
     },
     addKeyValue () {
       this.keyValues.push({index: this.index, type: 'text'})
       this.index++
+    },
+    addProjection () {
+      this.projections.push({index: this.p_index, type: 'text'})
+      this.p_index++
     }
   }
 }
@@ -110,5 +161,8 @@ export default {
   }
   .collection.nodata:focus {
     box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+  }
+  .label-also {
+    position: relative;
   }
 </style>
