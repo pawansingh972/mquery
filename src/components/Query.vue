@@ -103,24 +103,25 @@ export default {
 
       this.keyValueQuery = ''
 
-      for (let kv of this.keyValues) {
-        this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
+      if (this.keyValues && this.keys.length && this.values.length) {
+        for (let kv of this.keyValues) {
+          this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
 
-        //! Multiple key values
-        if ((kv.index + 1) !== this.keyValues.length) {
-          this.keyValueQuery += ', '
+          //! Multiple key values
+          if ((kv.index + 1) !== this.keyValues.length) {
+            this.keyValueQuery += ', '
+          }
         }
       }
 
       this.queryEnd = '}'
 
       //! Projections
-      if (this.projections.length) {
+      if (this.projections.length && this.p_keys.length && this.p_values.length) {
         this.projectionQuery = ', {'
 
         for (let projection of this.projections) {
-          this.projectionQuery +=
-            this.p_keys[projection.index] + ': ' + this.p_values[projection.index]
+          this.projectionQuery += this.p_keys[projection.index] + ': ' + this.p_values[projection.index]
 
           //! Multiple key values
           if (projection.index + 1 !== this.projections.length) {
