@@ -30,7 +30,7 @@
                   <ol class="mt-4">
                     <li class="mb-4" v-for="(projection, index) in projections" :key="index">
                       <input v-model='p_keys[index]' :type="projection.type" name="" :id="'key-' + projection.index">
-                      <input v-model='p_values[index]' class="ml-4" :type="projection.type" name="" :id="'value-' + projection.index">
+                      <input v-model='p_values[index]' class="ml-4 col-1" :type="projection.type" name="" :id="'value-' + projection.index">
                     </li>
                   </ol>
                   <b-button size="sm" v-on:click="addProjection" class="mt-3">add projections { key:value }</b-button><br><br>
@@ -149,7 +149,7 @@ export default {
       this.index++
     },
     addProjection () {
-      this.projections.push({index: this.p_index, type: 'text'})
+      this.projections.push({index: this.p_index, type: 'number'})
       this.p_index++
     }
   }
