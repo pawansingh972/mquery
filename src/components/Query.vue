@@ -29,7 +29,7 @@
                   <!-- Projections Key/Value pairs -->
                   <ol class="mt-4">
                     <li class="mb-4" v-for="(projection, index) in projections" :key="index">
-                      <input v-model='p_keys[index]' :type="projection.type" name="" :id="'key-' + projection.index">
+                      <input v-model='p_keys[index]' type="text" name="" :id="'key-' + projection.index">
                       <input v-model='p_values[index]' class="ml-4 col-1" :type="projection.type" name="" :id="'value-' + projection.index">
                     </li>
                   </ol>
