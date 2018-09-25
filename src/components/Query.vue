@@ -16,7 +16,7 @@
                     class="collection"
                     v-bind:class="{ 'nodata': needCollection }"
                     type="text"
-                    placeholder="Enter your collection">
+                    placeholder="Enter your collection name">
                   </b-form-input>
                   <!-- Key/Value pairs -->
                   <ol class="mt-4">
