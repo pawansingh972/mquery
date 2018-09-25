@@ -21,8 +21,8 @@
                   <!-- Key/Value pairs -->
                   <ol class="mt-4">
                     <li class="mb-4" v-for="(keyValue, index) in keyValues" :key="index">
-                      <input v-model='keys[index]' :type="keyValue.type" name="" :id="'key-' + keyValue.index">
-                      <input v-model='values[index]' class="ml-4" :type="keyValue.type" name="" :id="'value-' + keyValue.index">
+                      <input placeholder="key" v-model='keys[index]' :type="keyValue.type" name="" :id="'key-' + keyValue.index">
+                      <input placeholder="value" v-model='values[index]' class="ml-4" :type="keyValue.type" name="" :id="'value-' + keyValue.index">
                     </li>
                   </ol>
                   <b-button size="sm" v-on:click="addKeyValue" class="mt-3">add { key:value }</b-button><br>
