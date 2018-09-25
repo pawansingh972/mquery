@@ -21,8 +21,8 @@
                   <!-- Key/Value pairs -->
                   <ol class="mt-4">
                     <li class="mb-4" v-for="(keyValue, index) in keyValues" :key="index">
-                      <input placeholder="key" v-model='keys[index]' :type="keyValue.type" name="" :id="'key-' + keyValue.index">
-                      <input placeholder="value" v-model='values[index]' class="ml-4" :type="keyValue.type" name="" :id="'value-' + keyValue.index">
+                      <input v-model='keys[index]' :type="keyValue.type" name="" :id="'key-' + keyValue.index">
+                      <input v-model='values[index]' class="ml-4" :type="keyValue.type" name="" :id="'value-' + keyValue.index">
                     </li>
                   </ol>
                   <b-button size="sm" v-on:click="addKeyValue" class="mt-3">add { key:value }</b-button><br>
@@ -40,7 +40,7 @@
                       <b-form-radio value="p_no">No</b-form-radio>
                     </b-form-radio-group>
                   </b-form-group>
-                  <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
+                  <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE THE QUERY</b-button>
                 </b-col>
               </b-row>
             </b-container>
