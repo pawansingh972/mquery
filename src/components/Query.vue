@@ -93,6 +93,7 @@ export default {
   },
   methods: {
     constructQuery () {
+      let isFirstQueryParam = true;
       if (this.collection === '') {
         this.needCollection = true
         return
@@ -108,9 +109,10 @@ export default {
         for (let kv of this.keyValues) {
           if (this.keys[kv.index] && this.values[kv.index]) {
             this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
+            isFirstQueryParam = false;
           }
           //! Multiple key values
-          if ((kv.index + 1) !== this.keyValues.length && this.keys[kv.index + 1] && this.values[kv.index + 1]) {
+          if (!isFirstQueryParam && (kv.index + 1) !== this.keyValues.length && this.keys[kv.index + 1] && this.values[kv.index + 1]) {
             this.keyValueQuery += ', '
           }
         }
