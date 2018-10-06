@@ -16,7 +16,7 @@
                     class="collection"
                     v-bind:class="{ 'nodata': needCollection }"
                     type="text"
-                    placeholder="Enter your collection">
+                    placeholder="Enter your collection name">
                   </b-form-input>
                   <!-- Key/Value pairs -->
                   <ol class="mt-4">
@@ -29,7 +29,7 @@
                   <!-- Projections Key/Value pairs -->
                   <ol class="mt-4">
                     <li class="mb-4" v-for="(projection, index) in projections" :key="index">
-                      <input v-model='p_keys[index]' :type="projection.type" name="" :id="'key-' + projection.index">
+                      <input v-model='p_keys[index]' type="text" name="" :id="'key-' + projection.index">
                       <input v-model='p_values[index]' class="ml-4 col-1" :type="projection.type" name="" :id="'value-' + projection.index">
                     </li>
                   </ol>
@@ -40,7 +40,7 @@
                       <b-form-radio value="p_no">No</b-form-radio>
                     </b-form-radio-group>
                   </b-form-group>
-                  <b-button size="sm" id="generate-btn" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
+                  <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE THE QUERY</b-button>
                   <b-alert :show="dismissCountDown"
                           @variant="alertVariant"
                           @dismissed="dismissCountDown=0"
