@@ -40,7 +40,13 @@
                       <b-form-radio value="p_no">No</b-form-radio>
                     </b-form-radio-group>
                   </b-form-group>
-                  <b-button size="sm" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
+                  <b-button size="sm" id="generate-btn" variant="primary" v-on:click="constructQuery" class="mt-3">GENERATE</b-button>
+                  <b-alert :show="dismissCountDown"
+                          @variant="alertVariant"
+                          @dismissed="dismissCountDown=0"
+                          @dismiss-count-down="countDownChanged">
+                          {{alertMessage}}
+                  </b-alert>
                 </b-col>
               </b-row>
             </b-container>
@@ -81,7 +87,12 @@ export default {
       p_keys: [],
       p_values: [],
       prettify: '',
-      prettify_selected: 'p_yes'
+      prettify_selected: 'p_yes',
+      dismissSecs: 1,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+      alertVariant: 'success',
+      alertMessage: ''
     }
   },
   watch: {
@@ -105,7 +116,6 @@ export default {
       this.keyValueQuery = ''
 
       if (this.keyValues && this.keys.length && this.values.length) {
-        debugger
         for (let kv of this.keyValues) {
           if (this.keys[kv.index] && this.values[kv.index]) {
             this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
@@ -147,6 +157,24 @@ export default {
       } else {
         this.query += ';'
       }
+      setTimeout(() => {
+        this.copyElement('query')
+      }, 0)
+    },
+    copyElement (selector) {
+      let elementToCopyFrom = document.querySelector('#' + selector)
+      elementToCopyFrom.setAttribute('type', 'text')
+      elementToCopyFrom.select()
+      try {
+        let successful = document.execCommand('copy')
+        if (successful) {
+          this.showAlert('success', 'Query Copied to clipboard!')
+        }
+      } catch (err) {
+        this.showAlert('error', 'Error Copying to clipboard!')
+      }
+      /* unselect the range */
+      window.getSelection().removeAllRanges()
     },
     addKeyValue () {
       this.keyValues.push({index: this.index, type: 'text'})
@@ -155,6 +183,14 @@ export default {
     addProjection () {
       this.projections.push({index: this.p_index, type: 'number'})
       this.p_index++
+    },
+    countDownChanged (dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert (variant, message) {
+      this.dismissCountDown = this.dismissSecs
+      this.alertVariant = variant
+      this.alertMessage = message
     }
   }
 }
