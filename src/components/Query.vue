@@ -104,11 +104,13 @@ export default {
       this.keyValueQuery = ''
 
       if (this.keyValues && this.keys.length && this.values.length) {
+        debugger
         for (let kv of this.keyValues) {
-          this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
-
+          if (this.keys[kv.index] && this.values[kv.index]) {
+            this.keyValueQuery += this.keys[kv.index] + ': ' + '\'' + this.values[kv.index] + '\''
+          }
           //! Multiple key values
-          if ((kv.index + 1) !== this.keyValues.length) {
+          if ((kv.index + 1) !== this.keyValues.length && this.keys[kv.index + 1] && this.values[kv.index + 1]) {
             this.keyValueQuery += ', '
           }
         }
